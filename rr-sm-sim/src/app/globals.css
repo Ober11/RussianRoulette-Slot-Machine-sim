@@ -7,6 +7,11 @@
   --background-rgb: 30, 44, 55;
 }
 
+.slots-border {
+  border: 5px solid;
+  border-image: linear-gradient(to right, rgb(23, 246, 14), rgb(154, 54, 54)) 1 / 2 / 2 stretch;
+
+}
 
 
 body {
