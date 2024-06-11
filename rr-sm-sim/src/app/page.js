@@ -20,8 +20,7 @@ export default function Home() {
         const value = parseInt(event.target.value);
         console.log("Select changed to:", value);
         setFormValue(value);
-        handleReset()
-        setImageIds([RandomizeSlots(), RandomizeSlots(), RandomizeSlots()]);
+        handleReset();
     };
 
     function RandomizeSlots(){
@@ -31,10 +30,56 @@ export default function Home() {
         const picid = slotnumber > elessaferatio ? 1 : 2;
         return picid;
     }
-
     useEffect(() => {
         setImageIds([RandomizeSlots(), RandomizeSlots(), RandomizeSlots()]);
+
+        // Add keydown event listener
+        document.addEventListener('keydown', handleKeyDown);
+
+        // Cleanup function to remove event listener when component unmounts
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
     }, [formValue]); // Update image IDs when form value changes
+
+    function handleKeyDown(event) {
+        // Handle keydown events
+        console.log('Key pressed:', event.key);
+
+        // Check if all images are revealed
+        const allRevealed = revealed.every(isRevealed => isRevealed);
+        console.log('All images revealed:', allRevealed);
+
+        // Example: Check if the 'm' key is pressed
+        if (event.key === 'm') {
+            if (!allRevealed) { // Check if all images are not revealed
+                handleReset(); // Reset images
+
+                // Delay the revealing process to ensure the reset happens first
+                setTimeout(() => {
+                    setRevealed([true, false, false]);
+                    setTimeout(() => {
+                        setRevealed([true, true, false]);
+                        setTimeout(() => {
+                            setRevealed([true, true, true]);
+                        }, 1000); // Wait for 1 second
+                    }, 1000); // Wait for 1 second
+                }, 0); // Wait for next tick
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     return (
         <main className="flex min-h-screen flex-col items-center p-8">
@@ -74,4 +119,3 @@ export default function Home() {
         </main>
     );
 }
-
